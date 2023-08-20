@@ -1,6 +1,8 @@
-import { createStore } from 'redux';
-import userReducer from './userReducer';
+import { createStore, combineReducers } from 'redux';
+import contactReducer from './userReducer';
 
-const store = createStore(userReducer);
+const rootReducer = combineReducers({
+  contact: contactReducer,
+});
 
-export default store;
+export const store = createStore(rootReducer);
