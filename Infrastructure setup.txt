@@ -1,0 +1,87 @@
+---
+привіт як підключити SonarCloud.io до мого github через actions
+
+---
+Привіт! Щоб підключити SonarCloud.io до вашого репозиторію GitHub через GitHub Actions, виконайте наступні кроки:
+
+1. **Створіть обліковий запис на SonarCloud**
+   
+    Якщо у вас ще немає облікового запису на SonarCloud, перейдіть на [SonarCloud.io](https://sonarcloud.io/) і створіть новий обліковий запис, використовуючи ваші облікові дані GitHub.
+
+2. **Додайте ваш репозиторій**
+
+    Після реєстрації та входу в систему, додайте ваш репозиторій GitHub у SonarCloud.
+
+3. **Отримайте ключ проекту та токен**
+
+    Відкрийте налаштування вашого проекту на SonarCloud і знайдіть ключ проекту і токен доступу. Ці дані вам знадобляться для налаштування GitHub Actions.
+
+4. **Налаштуйте GitHub Actions**
+
+    У вашому репозиторії GitHub створіть файл дії, наприклад `.github/workflows/sonarcloud.yml`, із наступним вмістом:
+
+    ```yaml
+    name: SonarCloud Scan
+
+    on:
+      push:
+        branches:
+          - master
+      pull_request:
+        types: [opened, synchronize, reopened]
+
+    jobs:
+      build:
+
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Check out the repo
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0  # This is required for sonarcloud to calculate diffs
+
+        - name: Set up JDK 11
+          uses: actions/setup-java@v2
+          with:
+            distribution: 'adopt'
+            java-version: '11'
+
+        - name: Cache SonarCloud packages
+          uses: actions/cache@v2
+          with:
+            path: ~/.sonar/cache
+            key: ${{ runner.os }}-sonar
+            restore-keys: ${{ runner.os }}-sonar
+
+        - name: Cache Maven packages
+          uses: actions/cache@v2
+          with:
+            path: ~/.m2
+            key: ${{ runner.os }}-m2
+            restore-keys: ${{ runner.os }}-m2
+
+        - name: Build and analyze
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+    ```
+
+    Припущення тут полягає в тому, що ви використовуєте Maven як систему збірки. Якщо ви використовуєте інший інструмент, вам потрібно буде налаштувати крок "Build and analyze" відповідно.
+
+5. **Добавте токен SonarCloud у секрети GitHub**
+
+    В репозиторії GitHub перейдіть до розділу "Settings" > "Secrets" і добавте ваш токен SonarCloud як новий секрет із назвою `SONAR_TOKEN`.
+
+6. **Запустіть GitHub Actions**
+
+    Зараз, коли все налаштовано, кожен пуш або pull request в гілку `master` викликатиме аналіз SonarCloud через GitHub Actions.
+
+Сподіваюся, ця інструкція буде корисною! Якщо у вас є питання або проблеми, дайте знати.
+
+---
+згенеруй нашу розмову в txt файл
+
+---
+На жаль, я не можу створювати файли безпосередньо, але я можу надати вам текст у форматі, який ви зможете вставити в будь-який текстовий редактор і зберегти як `.txt` файл. Ось наша розмова:
