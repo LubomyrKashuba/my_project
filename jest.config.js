@@ -9,13 +9,13 @@ module.exports = {
 
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
-    '!<rootDir>/src/App.js',
-    '!<rootDir>/babel.config.js',
-    '!<rootDir>/src/index.js',
-    '!<rootDir>/jest.config.js',
-    '!<rootDir>/src/redux/store.js',
-    '!<rootDir>/src/components/Table/Table.js',
-    '!<rootDir>/src/babel.config.js',
+    '!src/App.js',
+    '!babel.config.js',
+    '!src/index.js',
+    '!jest.config.js',
+    '!src/redux/store.js',
+    '!src/components/Table/Table.js',
+    '!src/babel.config.js',
   ],
 
   coverageDirectory: 'coverage',
