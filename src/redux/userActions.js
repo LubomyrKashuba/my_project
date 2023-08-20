@@ -1,6 +1,6 @@
 export const SET_FIELD = 'SET_FIELD';
 
-export const setField = (name, value) => ({
+export const setField = (data) => ({
   type: SET_FIELD,
-  payload: { name, value },
+  payload: data,
 });

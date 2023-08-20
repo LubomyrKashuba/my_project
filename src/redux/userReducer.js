@@ -11,7 +11,7 @@ const contactReducer = (state = initialState, action) => {
   if (action.type === SET_FIELD) {
     return {
       ...state,
-      [action.payload.name]: action.payload.value,
+      ...action.payload,
     };
   }
   return state;

@@ -1,0 +1,163 @@
+User
+створи реакт компоненту яка відобразить 4 поля з редакс стору
+ChatGPT
+Давайте створимо React компоненту, яка відобразить чотири поля з Redux стору.
+
+По-перше, додамо потрібні пакети:
+bash
+Copy code
+npm install react-redux
+За припущенням у вас вже налаштований Redux стор, додаймо спрощений приклад store.js:
+javascript
+Copy code
+import { createStore } from 'redux';
+
+const initialState = {
+    field1: '',
+    field2: '',
+    field3: '',
+    field4: ''
+};
+
+function rootReducer(state = initialState, action) {
+    switch (action.type) {
+        case 'UPDATE_FIELD':
+            return {
+                ...state,
+                [action.payload.field]: action.payload.value
+            };
+        default:
+            return state;
+    }
+}
+
+const store = createStore(rootReducer);
+
+export default store;
+Створимо наш React компонент FieldsDisplay.js:
+javascript
+Copy code
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+const FieldsDisplay = () => {
+    const field1 = useSelector(state => state.field1);
+    const field2 = useSelector(state => state.field2);
+    const field3 = useSelector(state => state.field3);
+    const field4 = useSelector(state => state.field4);
+
+    return (
+        <div>
+            <p>Field 1: {field1}</p>
+            <p>Field 2: {field2}</p>
+            <p>Field 3: {field3}</p>
+            <p>Field 4: {field4}</p>
+        </div>
+    );
+}
+
+export default FieldsDisplay;
+У цьому компоненті ми використовуємо useSelector з react-redux, щоб отримати доступ до конкретних полів у нашому сторі.
+
+Щоб використати цей компонент у вашому додатку:
+javascript
+Copy code
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import FieldsDisplay from './FieldsDisplay';
+
+function App() {
+    return (
+        <Provider store={store}>
+            <div className="App">
+                <FieldsDisplay />
+            </div>
+        </Provider>
+    );
+}
+
+export default App;
+Тепер у вас є компонент FieldsDisplay, який відображає чотири поля з Redux стору.
+
+
+
+
+User
+цемає бути таблиця з полями first name, last name, email and message
+ChatGPT
+Дякую за уточнення. Давайте створимо таблицю, яка відобразить ці поля з Redux стору.
+
+Оновлення store.js для нової структури даних:
+javascript
+Copy code
+import { createStore } from 'redux';
+
+const initialState = {
+    user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        message: ''
+    }
+};
+
+function rootReducer(state = initialState, action) {
+    switch (action.type) {
+        case 'UPDATE_USER':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    [action.payload.field]: action.payload.value
+                }
+            };
+        default:
+            return state;
+    }
+}
+
+const store = createStore(rootReducer);
+
+export default store;
+Оновлення FieldsDisplay.js:
+javascript
+Copy code
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+const FieldsDisplay = () => {
+    const user = useSelector(state => state.user);
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>First Name</td>
+                    <td>{user.firstName}</td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td>{user.lastName}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{user.email}</td>
+                </tr>
+                <tr>
+                    <td>Message</td>
+                    <td>{user.message}</td>
+                </tr>
+            </tbody>
+        </table>
+    );
+}
+
+export default FieldsDisplay;
+Тепер, коли ви використовуєте компонент FieldsDisplay, він відобразить поля "first name", "last name", "email" і "message" з Redux стору у формі таблиці.

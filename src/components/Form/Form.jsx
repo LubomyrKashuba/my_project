@@ -3,26 +3,34 @@ import { useSelector, useDispatch } from 'react-redux';
 import validator from 'validator';
 import { setField } from '../../redux/userActions';
 
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  message: '',
+};
 
-function ContactForm() {
+
+function Form() {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.contact);
 
+  const [inputs, setInputs] = useState(initialValues);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    dispatch(setField(name, value));
+    setInputs((prev) => ({...prev, [name]: value}))
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.firstName.trim())
+    if (!inputs.firstName.trim())
       newErrors.firstName = 'First Name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last Name is required';
-    if (!validator.isEmail(formData.email)) newErrors.email = 'Invalid email';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    if (!inputs.lastName.trim()) newErrors.lastName = 'Last Name is required';
+    if (!validator.isEmail(inputs.email)) newErrors.email = 'Invalid email';
+    if (!inputs.message.trim()) newErrors.message = 'Message is required';
 
     setErrors(newErrors);
 
@@ -32,7 +40,8 @@ function ContactForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Відправлені дані:', formData);
+      dispatch(setField(inputs));
+      console.log('Відправлені дані:', inputs);
     }
   };
 
@@ -43,7 +52,7 @@ function ContactForm() {
         <input
           type="text"
           name="firstName"
-          value={formData.firstName}
+          value={inputs.firstName}
           onChange={handleChange}
         />
         {errors.firstName && <p>{errors.firstName}</p>}
@@ -53,7 +62,7 @@ function ContactForm() {
         <input
           type="text"
           name="lastName"
-          value={formData.lastName}
+          value={inputs.lastName}
           onChange={handleChange}
         />
         {errors.lastName && <p>{errors.lastName}</p>}
@@ -63,7 +72,7 @@ function ContactForm() {
         <input
           type="email"
           name="email"
-          value={formData.email}
+          value={inputs.email}
           onChange={handleChange}
         />
         {errors.email && <p>{errors.email}</p>}
@@ -72,7 +81,7 @@ function ContactForm() {
         <label>Message:</label>
         <textarea
           name="message"
-          value={formData.message}
+          value={inputs.message}
           onChange={handleChange}
         />
         {errors.message && <p>{errors.message}</p>}
@@ -82,4 +91,4 @@ function ContactForm() {
   );
 }
 
-export default ContactForm;
+export default Form;
