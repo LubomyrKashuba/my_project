@@ -8,15 +8,13 @@ const initialState = {
 };
 
 const contactReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_FIELD:
-      return {
-        ...state,
-        [action.payload.name]: action.payload.value,
-      };
-    default:
-      return state;
+  if (action.type === SET_FIELD) {
+    return {
+      ...state,
+      [action.payload.name]: action.payload.value,
+    };
   }
+  return state;
 };
 
 export default contactReducer;
