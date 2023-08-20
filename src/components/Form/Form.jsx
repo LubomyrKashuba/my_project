@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import validator from 'validator';
 import { setField } from '../../redux/userActions';
 
@@ -13,7 +13,6 @@ const initialValues = {
 
 function Form() {
   const dispatch = useDispatch();
-  const formData = useSelector((state) => state.contact);
 
   const [inputs, setInputs] = useState(initialValues);
   const [errors, setErrors] = useState({});
@@ -48,8 +47,9 @@ function Form() {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>First Name:</label>
+        <label htmlFor="firstName">First Name:</label>
         <input
+          id="firstName"
           type="text"
           name="firstName"
           value={inputs.firstName}
@@ -58,8 +58,9 @@ function Form() {
         {errors.firstName && <p>{errors.firstName}</p>}
       </div>
       <div>
-        <label>Last Name:</label>
+        <label htmlFor="lastName">Last Name:</label>
         <input
+          id="lastName"
           type="text"
           name="lastName"
           value={inputs.lastName}
@@ -68,8 +69,9 @@ function Form() {
         {errors.lastName && <p>{errors.lastName}</p>}
       </div>
       <div>
-        <label>Email:</label>
+        <label htmlFor="email">Email:</label>
         <input
+          id="email"
           type="email"
           name="email"
           value={inputs.email}
@@ -78,8 +80,9 @@ function Form() {
         {errors.email && <p>{errors.email}</p>}
       </div>
       <div>
-        <label>Message:</label>
+        <label htmlFor="message">Message:</label>
         <textarea
+          id="message"
           name="message"
           value={inputs.message}
           onChange={handleChange}
